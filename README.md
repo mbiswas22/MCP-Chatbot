@@ -131,3 +131,6 @@ Bot: Nice to meet you! 😊
 - FastMCP Documentation
 - MCP (Model Context Protocol) Concepts
 - Async Python (`async` / `await`)
+
+## Screenshot
+<img width="365" height="157" alt="image" src="https://github.com/user-attachments/assets/a3017b75-bc9c-4a66-b634-935093520d0e" />
