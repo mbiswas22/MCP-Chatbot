@@ -2,10 +2,18 @@
 class ChatAgent:
     async def respond(self, message: str, mcp_client) -> str:
         name = None
+        # city = None
 
-        lower_message = message.lower()
+        lower_message = message.lower().strip()
+
+
         if "my name is" in lower_message:
-            name = lower_message.split("my name is")[-1].strip()
+            name = lower_message.split("my name is")[-1].strip().title()
+
+        # elif "weather in" in lower_message:
+        #     city = lower_message.split("weather in")[-1].strip().title()
+        #     print(f"DEBUG city -> '{city}'")
+
 
         if name:
             result = await mcp_client.call_tool(
@@ -13,6 +21,13 @@ class ChatAgent:
                 {"name": name.capitalize()}
             )
             return result.content[0].text
+        
+        # if city:
+        #     result = await mcp_client.call_tool(
+        #         "get_weather",
+        #         {"city": city}
+        #     )
+        #     return result.content[0].text
 
         return f"Nice to meet you! 😊"
 

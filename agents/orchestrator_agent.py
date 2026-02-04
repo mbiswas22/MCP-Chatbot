@@ -1,16 +1,20 @@
 from agents.chat_agent import ChatAgent
 from agents.time_agent import TimeAgent
+from agents.weather_agent import WeatherAgent
 
 # It routes intent to the right agent
 class OrchestratorAgent:
     def __init__(self, mcp_client):
         self.chat_agent = ChatAgent()
         self.time_agent = TimeAgent()
+        self.weather_agent = WeatherAgent()
         self.mcp = mcp_client
 
     async def route(self, message: str) -> str:
         if "time" in message.lower():
             return await self.time_agent.respond(self.mcp)
+        elif "weather" in message.lower():
+            return await self.weather_agent.respond(message, self.mcp)
         return await self.chat_agent.respond(message, self.mcp)
 
 

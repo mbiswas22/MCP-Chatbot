@@ -1,8 +1,13 @@
+import os
 from fastmcp import FastMCP
 from datetime import datetime
 from dotenv import load_dotenv
+import requests
+
 
 load_dotenv()  # loads .env into environment variables
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+
 app = FastMCP("multi-agent-mcp")
 
 @app.tool(
@@ -21,12 +26,43 @@ def get_current_time():
 def get_user_info(name) -> str:
     return f"Hello {name}! 👋 How can I help you today?"
 
+
+@app.tool(
+    name="get_weather",
+    description="Get current weather for a given city"
+)
+
+def get_weather(city: str) -> str:
+    if not WEATHER_API_KEY:
+        return "Weather API key is missing."
+
+    # url = f"http://api.openweathermap.org/data/2.5/weather?q={city}&appid={WEATHER_API_KEY}&units=metric"
+    url = "https://api.openweathermap.org/data/2.5/weather"
+    params = {
+        "q": city,
+        "appid": WEATHER_API_KEY,
+        "units": "metric"
+    }
+
+    response = requests.get(url, params=params)
+    print(f"DEBUG response -> '{response.text}'")
+    if response.status_code != 200:
+        return f"Could not fetch weather for {city}"
+
+    data = response.json()
+
+    if data.get("cod") != 200:
+        return f"City {city} not found."
+
+    weather_desc = data["weather"][0]["description"]
+    temp = data["main"]["temp"]
+    humidity = data["main"]["humidity"]
+
+    return f"Current weather in {city}: {weather_desc}, Temperature: {temp}°C, Humidity: {humidity}%"
+
+
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, transport="http")
-
-
-
-
 
 
 
