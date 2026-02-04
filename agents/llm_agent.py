@@ -1,20 +1,23 @@
-# # agents/llm_agent.py
-# import httpx
+# agents/llm_agent.py
+import os
+from dotenv import load_dotenv
+from openai import OpenAI
 
-# class LLMAgent:
-#     def __init__(self):
-#         self.endpoint = "http://localhost:11434/v1/chat/completions"
-#         self.model = "llama3"
+load_dotenv()  # loads .env into environment variables
+OPEN_AI_API_KEY = os.getenv("OPEN_AI_API_KEY")
 
-#     async def respond(self, messages):
-#         payload = {
-#             "model": self.model,
-#             "messages": messages,
-#             "temperature": 0.7
-#         }
+class LLMAgent:
+    def __init__(self):
+        self.client = OpenAI(
+            api_key=OPEN_AI_API_KEY
+        )
+        self.model = "gpt-4o-mini"  # cheaper + fast
 
-#         async with httpx.AsyncClient() as client:
-#             response = await client.post(self.endpoint, json=payload)
-#             data = response.json()
+    async def respond(self, messages: list[dict]) -> str:
+        response = self.client.chat.completions.create(
+            model=self.model,
+            messages=messages,
+            temperature=0.7
+        )
 
-#         return data["choices"][0]["message"]["content"]
+        return response.choices[0].message.content

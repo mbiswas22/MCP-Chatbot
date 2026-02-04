@@ -112,6 +112,14 @@ You: What time is it now?
 Bot: 2026-02-02 10:21:51
 You: Nice to meet you! Bye!
 Bot: Nice to meet you! 😊
+You: weather in chicago
+Bot: Current weather in Chicago: overcast clouds, Temperature: -4.02°C, Humidity: 78%
+You: tell me a joke
+Bot: Sure! Here’s a joke for you:
+
+Why did the scarecrow win an award?
+
+Because he was outstanding in his field!
 ```
 
 ---
@@ -133,4 +141,5 @@ Bot: Nice to meet you! 😊
 - Async Python (`async` / `await`)
 
 ## Screenshot
+
 <img width="365" height="157" alt="image" src="https://github.com/user-attachments/assets/a3017b75-bc9c-4a66-b634-935093520d0e" />
